@@ -1,6 +1,6 @@
 import Actions from "./actions.config";
 
-import { registerService, logInService } from "./service";
+import { registerService, logInService, getFlights } from "./service";
 
 export const saveUserAction = (user: any) => {
     return async (dispachFn: any) => {
@@ -68,4 +68,27 @@ export const logUserPending = () => {
     };
 };
 
+export const getFlightsAction = ( searched: any, token:string) => {
+    return async (dispachFn: any) => {
+        dispachFn(getFlightsPending());
+        const response: any = await getFlights(searched, token);
+        if (response.errMassage) alert(response.errMassage)
+        else {
+            dispachFn(getFlightsSuccess(response));
+        }
+    };
+};
 
+export const getFlightsSuccess = (flightsArr: any) => {
+    console.log(flightsArr)
+    return {
+        type: Actions.GET_FLIGHTS_SUCCESS,
+        payload: { flightsArr }
+    };
+};
+
+export const getFlightsPending = () => {
+    return {
+        type: Actions.GET_FLIGHTS_PENDING,
+    };
+};

@@ -9,7 +9,8 @@ const initialState = {
     },
     userLoading: false,
     redirect: false,
-    session: null
+    session: null,
+    flights: [],
 }
 
 
@@ -38,7 +39,8 @@ export default function root(state = initialState, action: any) {
         case Actions.STOP_SESSION: {
             return {
                 ...state,
-                session: null
+                session: null,
+                flights: []
             }
         }
         case Actions.LOGIN_USER_PENDING: {
@@ -54,6 +56,21 @@ export default function root(state = initialState, action: any) {
                 redirect: action.payload.redirect,
                 session: action.payload.session,
                 user: action.payload.user
+            }
+        }
+        case Actions.GET_FLIGHTS_PENDING: {
+            return {
+                ...state,
+                userLoading: true,
+                
+            }
+        }
+        case Actions.GET_FLIGHTS_SUCCESS: {
+            const { flightsArr } = action.payload
+            return {
+                ...state,
+                userLoading: false,
+                flights: flightsArr
             }
         }
         default: {

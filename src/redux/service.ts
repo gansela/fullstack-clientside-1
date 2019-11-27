@@ -19,3 +19,15 @@ export const logInService = async (logInUser: any) => {
     }
 
 }
+
+export const getFlights = async (searchParams: any, userKey: string) => {
+    const token = {
+        headers: { 'authorization': userKey }
+    };
+    try {
+        const { data } = await axios.post("http://localhost:4000/flights/schedule", searchParams, token);
+        return data;
+    } catch (ex) {
+        return []
+    }
+}

@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from "react-redux"
-import { disableRidirect } from "../../redux/actions"
+import { disableRidirect, getFlightsAction } from "../../redux/actions"
 import { saveToLocalStorage } from "../../utils/localStorage"
+import FlightCard from "../FlightCard"
 
 
 
@@ -10,27 +11,36 @@ class HomePage extends React.Component<any, any> {
   constructor(props: any) {
     super(props)
 
-    this.state = { helloName: "Guest" }
+    this.state = { helloName: "Guest", flightData: [], reload: false }
   }
 
 
-  componentDidMount() {
-    const { redirect, isRedirect } = this.props
+  async componentDidMount() {
+    const { redirect, isRedirect, session, getData } = this.props
+    console.log(this.props)
     if (redirect) {
       isRedirect()
+      if (session) {
+        await getData(session)
+        this.setState({ reload: true })
+      }
     }
   }
 
 
   render() {
-    const { helloName } = this.state
-    const { session, user } = this.props
+    const { helloName, reload, flightData } = this.state
+    const { session, user, flights } = this.props
+    if (reload) {
+      this.setState({ flightData: flights, reload: false })
+    }
     if (session && (helloName === "Guest")) {
-      this.setState({ helloName: user.fullName})
+      this.setState({ helloName: user.fullName })
     }
     return (
       <div style={{ height: "100vh" }}>
         <h3 className="jumbotron"> hello {helloName}</h3>
+        {flights.map((card: any) => <FlightCard card={card} />)}
       </div>
     )
   }
@@ -45,6 +55,9 @@ const mapDispatch = (dispatch: any) => {
   return {
     isRedirect: () => {
       dispatch(disableRidirect())
+    },
+    getData: (key: string) => {
+      dispatch(getFlightsAction({}, key))
     }
   }
 }

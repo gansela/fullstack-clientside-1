@@ -9,6 +9,7 @@ import SignIn from "./components/SignIn"
 import { Provider } from "react-redux"
 import store from "./redux/store"
 import LogIn from "./components/LogIn"
+import TestComponent from "./components/TestComponent"
 
 
 
@@ -29,12 +30,14 @@ class App extends React.Component<any, any>{
               <Link to="/" style={{ margin: "10px" }}><Button variant="contained" >Home</Button></Link>
               <Link to="/signin" style={{ margin: "10px" }} ><Button variant="contained" >Sign Up</Button></Link>
               <Link to="/login" style={{ margin: "10px" }}><Button variant="contained" >Log In</Button></Link>
+              <Link to="/test" style={{ margin: "10px" }}><Button variant="contained" >test</Button></Link>
 
             </nav>
             <Container maxWidth="md" style={{ backgroundColor: "white", padding: "0px" }}>
               <Switch>
                 <Route path="/signin" component={SignIn} />
                 <Route path="/login" component={LogIn} />
+                <Route path="/test" component={TestComponent} />
                 <Route path="/" component={HomePage} />
                 <Route path="**" component={() => <h1> Not Found! </h1>} />
               </Switch>
